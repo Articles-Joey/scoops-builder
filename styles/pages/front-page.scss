@@ -1,15 +1,28 @@
+@use "bootstrap/scss/bootstrap-utilities" as *;
+
 .page-front-page {
     display: flex;
     height: 100vh;
     width: 100vw;
     overflow: hidden;
+    flex-direction: column;
+
+    @include media-breakpoint-up(lg) {
+        flex-direction: row;
+    }
 
     .preview {
         position: relative;
-        width: 70%;
-        height: 100%;
+        // width: 70%;
+        // height: 100%;
+        height: 50vh;
         overflow: hidden;
         // background-color: black;
+
+        @include media-breakpoint-up(lg) {
+            width: 70%;
+            height: 100%;
+        }
 
         .background {
             position: absolute;
@@ -27,11 +40,30 @@
     }
 
     .options {
-        width: 30%;
-        height: 100%;
+        // width: 30%;
+        // height: 100%;
+        height: 50vh;
         background-color: aqua;
         background-image: url("/img/seamless-pattern-texture-waffle-ice-cream-cone.webp");
         padding: 1rem;
-        overflow-y: scroll;
+        overflow-y: auto;
+
+        @include media-breakpoint-up(lg) {
+            width: 30%;
+            height: 100%;
+        }
+
+        .btn {
+            position: relative;
+
+            .file-button {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                left: 0;
+                top: 0;
+                opacity: 0;
+            }
+        }
     }
 }

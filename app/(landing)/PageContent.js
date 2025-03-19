@@ -1,18 +1,20 @@
 "use client"
+import { useState } from "react";
+import dynamic from "next/dynamic";
 
 import { useHotkeys } from "react-hotkeys-hook";
 
 import useStore from "@/components/useStore";
-import dynamic from "next/dynamic";
-
-// import PreviewCanvas from "@/components/PreviewCanvas";
-// import { Suspense } from "react";
 
 const PreviewCanvas = dynamic(() => import('@/components/PreviewCanvas'), {
     ssr: false,
 })
 
 export default function PageContent() {
+
+    const [canvasKey, setCanvasKey] = useState(0);
+
+    const [brandingLogo, setBrandingLogo] = useState(false);
 
     const container = useStore(state => state.container);
     const setContainer = useStore(state => state.setContainer);
@@ -23,19 +25,45 @@ export default function PageContent() {
     const toppings = useStore(state => state.toppings);
     const setToppings = useStore(state => state.setToppings);
 
+    const background = useStore(state => state.background);
+    const setBackground = useStore(state => state.setBackground);
+
+    const autoRotate = useStore(state => state.autoRotate);
+    const setAutoRotate = useStore(state => state.setAutoRotate);
+
+    useHotkeys("r", () => setCanvasKey(prevKey => prevKey + 1));
+    useHotkeys("b", () => setBackground(!background), [background]);
+    useHotkeys("a", () => setAutoRotate(!autoRotate), [autoRotate]);
+
+    const handleImageUpload = async (event) => {
+        const file = event.target.files?.[0];
+        if (file && (file.type === "image/png" || file.type === "image/webp")) {
+          const imageUrl = URL.createObjectURL(file);
+          setBrandingLogo(imageUrl);
+          setTimeout(() => {
+            setCanvasKey(prevKey => prevKey + 1)
+          }, 500)
+        } else {
+          alert("Please upload a PNG or WEBP image.");
+        }
+      };
+
     return (
         <div className="page page-front-page">
 
             <div className="preview">
-                <div className="background"></div>
-                <PreviewCanvas />
+                {background && <div className="background"></div>}
+                <PreviewCanvas
+                    key={canvasKey}
+                    imageUrl={brandingLogo}
+                />
             </div>
 
             <div className="options">
 
                 <div className="mb-3">
                     <div className="h2">Container</div>
-                    {['Waffle Cone', 'Paper Cup'].map(item => {
+                    {['Waffle Cone', 'Paper Cup', 'Hand'].map(item => {
                         return (
                             <button
                                 key={item}
@@ -67,7 +95,7 @@ export default function PageContent() {
                     </button> */}
 
                     <button
-                        className="btn btn-secondary"
+                        className="btn btn-success"
                         onClick={() => {
                             let newScoops = [
                                 ...scoops,
@@ -92,7 +120,12 @@ export default function PageContent() {
 
                                     {/* <div>{scoop_obj.flavor}</div> */}
 
-                                    {['Chocolate', 'Vanilla', 'Mint'].map(item => {
+                                    {[
+                                        'Chocolate',
+                                        'Vanilla',
+                                        'Mint',
+                                        'Strawberry'
+                                    ].map(item => {
                                         return (
                                             <button
                                                 key={item}
@@ -160,6 +193,63 @@ export default function PageContent() {
                             </div>
                         ))}
                     </div>
+                </div>
+
+                <hr />
+
+                <div className="">
+
+                    <div className="h2">Display</div>
+
+                    <button
+                        className="btn btn-light"
+                        onClick={() => {
+                            setBrandingLogo(false)
+                        }}
+                    >
+
+                        {brandingLogo && 'Remove Logo'}
+                        {!brandingLogo && 'Add Logo'}
+
+                        {!brandingLogo &&
+                            <input
+                                type="file"
+                                accept="image/png, image/webp"
+                                onChange={handleImageUpload}
+                                className="file-button"
+                            />
+                        }
+
+                    </button>
+
+                    <button
+                        className="btn btn-light"
+                        onClick={() => {
+                            setBackground(!background)
+                        }}
+                    >
+                        {background ? "Hide" : "Show"} Background
+                        <span className="badge bg-dark ms-2">B</span>
+                    </button>
+                    <button
+                        className="btn btn-light"
+                        onClick={() => {
+                            setCanvasKey(prevKey => prevKey + 1)
+                        }}
+                    >
+                        Reset Canvas
+                        <span className="badge bg-dark ms-2">R</span>
+                    </button>
+
+                    <button
+                        className="btn btn-light"
+                        onClick={() => {
+                            setAutoRotate(!autoRotate)
+                        }}
+                    >
+                        Auto Rotate
+                        <span className={`badge ${autoRotate ? "bg-success" : "bg-dark"} ms-2`}>A</span>
+                    </button>
                 </div>
 
             </div>

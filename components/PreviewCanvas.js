@@ -1,20 +1,23 @@
 "use client"
 
-import { useMemo, useRef, useState } from 'react'
-import { Canvas, useFrame, useLoader } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
+import { Decal, OrbitControls, useTexture } from '@react-three/drei'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import useStore from './useStore'
-import { CatmullRomCurve3, Vector3 } from 'three'
+import { CatmullRomCurve3, TextureLoader, Vector3 } from 'three'
+import { degToRad } from 'three/src/math/MathUtils'
 
-export default function PreviewCanvas() {
+export default function PreviewCanvas({ imageUrl }) {
 
     const coneModel = useLoader(GLTFLoader, '/models/cone.glb')
     const cupModel = useLoader(GLTFLoader, '/models/paper_cup.glb')
+    const handModel = useLoader(GLTFLoader, '/models/hand.glb')
 
     const container = useStore(state => state.container);
     const scoops = useStore(state => state.scoops);
-    const toppings = useStore(state => state.toppings);
+
+    const autoRotate = useStore(state => state.autoRotate);
 
     return (
         <Canvas camera={{ position: [0, 0, 2] }}>
@@ -24,13 +27,21 @@ export default function PreviewCanvas() {
             <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
 
             <OrbitControls
-                autoRotate
+                autoRotate={autoRotate}
             />
 
             {/* <Box position={[-1.2, 0, 0]} />
             <Box position={[1.2, 0, 0]} /> */}
 
             <group position={[0, -1, 0]}>
+
+                {imageUrl &&
+                <Logo 
+                // imageUrl={"/img/test.png"} 
+                imageUrl={imageUrl}
+                />
+                }
+
                 {container == "Waffle Cone" &&
                     <primitive
                         object={coneModel.scene}
@@ -44,6 +55,15 @@ export default function PreviewCanvas() {
                         object={cupModel.scene}
                         scale={0.16}
                         position={[0, 0.21, 0]}
+                    />
+                }
+
+                {container == "Hand" &&
+                    <primitive
+                        object={handModel.scene}
+                        scale={0.02}
+                        position={[0, 0.65, 0]}
+                        rotation={[0, -2, 0]}
                     />
                 }
 
@@ -61,6 +81,43 @@ export default function PreviewCanvas() {
 
         </Canvas>
     )
+}
+
+function Logo({imageUrl}) {
+    // const [texture, setTexture] = useState(null);
+    // const { gl } = useThree();
+
+    const texture = useTexture(imageUrl)
+
+    // useEffect(() => {
+    //     if (!imageUrl) return;
+
+    //     const loader = new TextureLoader();
+    //     loader.load(
+    //         imageUrl,
+    //         (loadedTexture) => {
+    //             loadedTexture.wrapS = loadedTexture.wrapT = RepeatWrapping;
+    //             setTexture(loadedTexture);
+    //         },
+    //         undefined,
+    //         (error) => console.error("Error loading texture:", error)
+    //     );
+    // }, [imageUrl]);
+
+    return (
+        <mesh
+            rotation={[degToRad(180),0,0]}
+            position={[0, 0.45, 0]}
+        >
+            <cylinderGeometry args={[0.15, 0.25, 0.5, 16, 1, true, 0, 2]} />
+            <meshStandardMaterial 
+                transparent={true}
+                opacity={0}
+            />
+            {/* {texture && <meshStandardMaterial map={texture} />} */}
+            <Decal polygonOffsetFactor={-0} position={[0, 0, 0]} scale={0.5} map={texture} />
+        </mesh>
+    );
 }
 
 function Box(props) {
@@ -105,7 +162,8 @@ function Scoop(props) {
     const flavorToColor = {
         "Chocolate": 'saddlebrown',
         "Vanilla": '#F3E5AB',
-        "Mint": '#ADEBB3'
+        "Mint": '#ADEBB3',
+        "Strawberry": "#fc5a8d",
     }
 
     return (
@@ -118,12 +176,17 @@ function Scoop(props) {
         // onPointerOut={(event) => setHover(false)}
         >
             {toppings["Sprinkles"] && <Sprinkles />}
+            {(toppings["Cherry"] && isTop) && <Cherry position={position} />}
+
+            {/* Sauces */}
             {toppings["Hot Fudge"] && <Drizzle type="Hot Fudge" />}
             {toppings["Marshmallow"] && <Drizzle type="Marshmallow" />}
             {toppings["Caramel"] && <Drizzle type="Caramel" />}
-            {(toppings["Cherry"] && isTop) && <Cherry position={position} />}
+            {toppings["Cherry Sauce"] && <Drizzle type="Cherry Sauce" />}
+
             <sphereGeometry args={[1, 20]} />
             <meshStandardMaterial color={flavorToColor[scoop_obj.flavor]} />
+
         </mesh>
     )
 }
@@ -162,7 +225,8 @@ function Drizzle({ type }) {
     const drizzleTypeToColor = {
         "Hot Fudge": 'saddlebrown',
         "Marshmallow": '#fff',
-        "Caramel": '#a97947'
+        "Caramel": '#a97947',
+        "Cherry Sauce": '#CD001A'
     }
 
     const fudgeStreaks = useMemo(() => {
@@ -216,11 +280,11 @@ function Cherry({ position }) {
     return (
         <group position={[position[0], 1.1, position[2]]}>
             <mesh scale={0.05}>
-                <sphereGeometry args={[2.5, 8, 8]} />
+                <sphereGeometry args={[4, 8, 8]} />
                 <meshStandardMaterial color={"red"} />
             </mesh>
-            <mesh scale={0.05} rotation={[0.2, 0, 0]}>
-                <cylinderGeometry args={[.1, .01, 8, 3]} />
+            <mesh scale={0.05} rotation={[0.2, 0, 0]} position={[0, 0.38, 0]}>
+                <cylinderGeometry args={[.2, .05, 8, 3]} />
                 <meshStandardMaterial color={"green"} />
             </mesh>
         </group>

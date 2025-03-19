@@ -14,7 +14,10 @@ const useStore = create((set) => ({
         },
         {
             flavor: 'Chocolate'
-        }
+        },
+        // {
+        //     flavor: 'Strawberry'
+        // }
     ],
     setScoops: (value) => set(() => ({ scoops: value })),
 
@@ -23,9 +26,16 @@ const useStore = create((set) => ({
         "Cherry": false,
         "Hot Fudge": false,
         "Marshmallow": false,
-        "Caramel": false         
+        "Caramel": false,
+        "Cherry Sauce": false,
     },
     setToppings: (value) => set(() => ({ toppings: value })),
+
+    background: true,
+    setBackground: (value) => set(() => ({ background: value })),
+
+    autoRotate: true,
+    setAutoRotate: (value) => set(() => ({ autoRotate: value })),
 
 }))
 
