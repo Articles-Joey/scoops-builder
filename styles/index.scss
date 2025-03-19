@@ -1,0 +1,108 @@
+@use "pages/not-found.scss";
+@use "pages/front-page.scss";
+
+:root {
+	--primary: #355aff;
+	--secondary: #71bfff;
+	--bs-card-bg: #fffbe0;
+
+	--bs-primary-rgb: 46, 49, 145;
+	--bs-secondary-rgb: 244, 156, 195;
+
+	--font-raleway: var(--raleway-font);
+	--font-ebgaramond: var(--font-ebgaramond);
+}
+
+::selection {
+	color: white;
+	background-color: black;
+}
+
+body {
+	// background-image: url("/img/background.png");
+	// background-size: 150px;
+	// background-color: #71bfff;
+	font-family: var(--font-raleway), sans-serif;
+	// margin: 1rem;
+}
+
+main {
+	height: calc(100vh);
+	overflow-y: hidden;
+}
+
+hr {
+	--bs-border-width: 5px;
+	color: black;
+	opacity: 0.75;
+	border-radius: 10px;
+}
+
+a.highlight {
+	text-decoration: none;
+
+	&:hover {
+		color: black;
+		background-color: white;
+		// -webkit-text-stroke: 0.1px white;
+	}
+}
+
+// @font-face {
+// 	font-family: "BelloScript";
+// 	src: url("/fonts/bello-script.ttf") format("truetype");
+// }
+
+// .belloScript {
+// 	font-family: "BelloScript";
+// }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-raleway), sans-serif;
+	// font-family: var(--font-ebgaramond), serif;
+	// font-family: "BelloScript";
+	// font-weight: 700;
+	// color: var(--secondary);
+	// -webkit-text-stroke: 1px var(--primary);
+}
+
+// .btn-primary {
+// 	background-color: var(--secondary);
+// 	border: 2px solid var(--primary);
+
+// 	&:hover {
+// 		background-color: var(--primary);
+// 	}
+
+// 	&:focus {
+// 		background-color: var(--primary);
+// 	}
+// }
+
+h2, .h2 {
+	font-weight: 900;
+}
+
+.label {
+	background-color: black;
+	color: white;
+}
+
+.btn-dark {
+	margin-top: auto;
+	background-color: black;
+	border-radius: 0px;
+	border: 1px solid white;
+}
+
+.btn-light {
+	margin-top: auto;
+	background-color: white;
+	border-radius: 0px;
+	border: 1px solid black;
+}
