@@ -36,10 +36,10 @@ export default function PreviewCanvas({ imageUrl }) {
             <group position={[0, -1, 0]}>
 
                 {imageUrl &&
-                <Logo 
-                // imageUrl={"/img/test.png"} 
-                imageUrl={imageUrl}
-                />
+                    <Logo
+                        // imageUrl={"/img/test.png"} 
+                        imageUrl={imageUrl}
+                    />
                 }
 
                 {container == "Waffle Cone" &&
@@ -83,7 +83,7 @@ export default function PreviewCanvas({ imageUrl }) {
     )
 }
 
-function Logo({imageUrl}) {
+function Logo({ imageUrl }) {
     // const [texture, setTexture] = useState(null);
     // const { gl } = useThree();
 
@@ -106,11 +106,11 @@ function Logo({imageUrl}) {
 
     return (
         <mesh
-            rotation={[degToRad(180),0,0]}
+            rotation={[degToRad(180), 0, 0]}
             position={[0, 0.45, 0]}
         >
             <cylinderGeometry args={[0.15, 0.25, 0.5, 16, 1, true, 0, 2]} />
-            <meshStandardMaterial 
+            <meshStandardMaterial
                 transparent={true}
                 opacity={0}
             />
@@ -166,6 +166,12 @@ function Scoop(props) {
         "Strawberry": "#fc5a8d",
     }
 
+    const colorMap = useLoader(TextureLoader, '/img/food_0010_color_1k.jpg');
+    const normalMap = useLoader(TextureLoader, '/img/food_0010_normal_directx_1k.png');
+    const roughnessMap = useLoader(TextureLoader, '/img/food_0010_roughness_1k.jpg');
+    const aoMap = useLoader(TextureLoader, '/img/food_0010_ao_1k.jpg');
+    const heightMap = useLoader(TextureLoader, '/img/food_0010_height_1k.png');
+
     return (
         <mesh
             {...props}
@@ -185,7 +191,15 @@ function Scoop(props) {
             {toppings["Cherry Sauce"] && <Drizzle type="Cherry Sauce" />}
 
             <sphereGeometry args={[1, 20]} />
-            <meshStandardMaterial color={flavorToColor[scoop_obj.flavor]} />
+            <meshStandardMaterial
+                color={flavorToColor[scoop_obj.flavor]}
+                // map={colorMap}
+                normalMap={normalMap}
+                roughnessMap={roughnessMap}
+                aoMap={aoMap}
+                displacementMap={heightMap}
+                displacementScale={0.5}
+            />
 
         </mesh>
     )
@@ -198,9 +212,10 @@ function Sprinkles() {
         for (let i = 0; i < 70; i++) {
             const theta = Math.random() * Math.PI * 2;
             const phi = Math.acos(2 * Math.random() - 1);
-            const x = Math.sin(phi) * Math.cos(theta);
-            const y = Math.sin(phi) * Math.sin(theta);
-            const z = Math.cos(phi);
+            const radius = 1.2; // Change this to your desired sphere size
+            const x = Math.sin(phi) * Math.cos(theta) * radius;
+            const y = Math.sin(phi) * Math.sin(theta) * radius;
+            const z = Math.cos(phi) * radius;
             const color = colors[Math.floor(Math.random() * colors.length)]
             points.push({ position: new Vector3(x, y, z), color })
         }
@@ -210,7 +225,7 @@ function Sprinkles() {
     return (
         <>
             {sprinkles.map((sprinkle, index) => (
-                <mesh key={index} position={sprinkle.position.toArray()} scale={0.05}>
+                <mesh key={index} position={sprinkle.position.toArray()} scale={0.1}>
                     <sphereGeometry args={[0.5, 8, 8]} />
                     <meshStandardMaterial color={sprinkle.color} />
                 </mesh>
@@ -242,9 +257,10 @@ function Drizzle({ type }) {
             for (let j = 0; j < 20; j++) { // Each streak has 10 points
                 theta += (Math.random() - 0.5) * 0.2;
                 phi += (Math.random() - 0.5) * 0.2;
-                const x = Math.sin(phi) * Math.cos(theta);
-                const y = Math.sin(phi) * Math.sin(theta);
-                const z = Math.cos(phi);
+                const radius = 1.23; // Change this to your desired sphere size
+                const x = Math.sin(phi) * Math.cos(theta) * radius;
+                const y = Math.sin(phi) * Math.sin(theta) * radius;
+                const z = Math.cos(phi) * radius;
                 points.push(new Vector3(x, y, z));
             }
             streaks.push(new CatmullRomCurve3(points));
@@ -278,7 +294,7 @@ function Drizzle({ type }) {
 function Cherry({ position }) {
 
     return (
-        <group position={[position[0], 1.1, position[2]]}>
+        <group position={[position[0], 1.3, position[2]]}>
             <mesh scale={0.05}>
                 <sphereGeometry args={[4, 8, 8]} />
                 <meshStandardMaterial color={"red"} />

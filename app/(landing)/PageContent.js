@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 import { useHotkeys } from "react-hotkeys-hook";
@@ -38,15 +38,23 @@ export default function PageContent() {
     const handleImageUpload = async (event) => {
         const file = event.target.files?.[0];
         if (file && (file.type === "image/png" || file.type === "image/webp")) {
-          const imageUrl = URL.createObjectURL(file);
-          setBrandingLogo(imageUrl);
-          setTimeout(() => {
-            setCanvasKey(prevKey => prevKey + 1)
-          }, 500)
+            const imageUrl = URL.createObjectURL(file);
+            setBrandingLogo(imageUrl);
+            setTimeout(() => {
+                setCanvasKey(prevKey => prevKey + 1)
+            }, 500)
         } else {
-          alert("Please upload a PNG or WEBP image.");
+            alert("Please upload a PNG or WEBP image.");
         }
-      };
+    };
+
+    useEffect(() => {
+        
+        setTimeout(() => {
+            setCanvasKey(1)
+        }, [500])
+
+    }, [])
 
     return (
         <div className="page page-front-page">
