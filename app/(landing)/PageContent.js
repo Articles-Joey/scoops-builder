@@ -32,6 +32,7 @@ export default function PageContent() {
     const setAutoRotate = useStore(state => state.setAutoRotate);
 
     useHotkeys("r", () => setCanvasKey(prevKey => prevKey + 1));
+    useHotkeys("f", () => fullscreen());
     useHotkeys("b", () => setBackground(!background), [background]);
     useHotkeys("a", () => setAutoRotate(!autoRotate), [autoRotate]);
 
@@ -49,12 +50,25 @@ export default function PageContent() {
     };
 
     useEffect(() => {
-        
+
         setTimeout(() => {
             setCanvasKey(1)
         }, [500])
 
     }, [])
+
+    function fullscreen() {
+        const el = document.querySelector('.page-front-page');
+        if (!document.fullscreenElement) {
+            if (el && el.requestFullscreen) {
+                el.requestFullscreen();
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
 
     return (
         <div className="page page-front-page">
@@ -239,6 +253,17 @@ export default function PageContent() {
                         {background ? "Hide" : "Show"} Background
                         <span className="badge bg-dark ms-2">B</span>
                     </button>
+
+                    <button
+                        className="btn btn-light"
+                        onClick={() => {
+                            fullscreen()
+                        }}
+                    >
+                        Fullscreen
+                        <span className="badge bg-dark ms-2">F</span>
+                    </button>
+
                     <button
                         className="btn btn-light"
                         onClick={() => {

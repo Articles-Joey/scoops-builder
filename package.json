@@ -9,26 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@react-three/drei": "^10.0.4",
-    "@react-three/fiber": "^9.1.0",
-    "axios": "^1.8.2",
+    "@react-three/drei": "^10.3.0",
+    "@react-three/fiber": "^9.1.2",
+    "axios": "^1.10.0",
     "bcryptjs": "^3.0.2",
-    "bootstrap": "^5.3.3",
-    "crypto-js": "^4.2.0",
+    "bootstrap": "^5.3.6",
     "date-fns": "^4.1.0",
-    "mongodb": "^6.13.1",
-    "motion": "^12.4.7",
-    "next": "^15.2.3",
+    "next": "^15.3.3",
     "react": "19.0.0",
-    "react-bootstrap": "^2.10.9",
+    "react-bootstrap": "^2.10.10",
     "react-dom": "19.0.0",
     "react-hotkeys-hook": "^4.6.1",
-    "sass": "^1.85.0",
+    "sass": "^1.89.2",
     "three": "^0.174.0",
-    "zustand": "^5.0.3"
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "eslint": "9.21.0",
-    "eslint-config-next": "15.1.7"
+    "eslint-config-next": "15.3.3"
   }
 }
