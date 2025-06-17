@@ -1,6 +1,8 @@
+## Scoops Builder
+
 3D Ice cream builder. Built with React.js, Three.js, and R3F.
 
-![Site Preview](public/preview/scoops-builder.mp4)
+<video src="public/preview/scoops-builder.mp4" width="500" controls></video>
 
 ## Getting Started
 
