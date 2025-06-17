@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useHotkeys } from "react-hotkeys-hook";
 
 import useStore from "@/components/useStore";
+import Link from "next/link";
 
 const PreviewCanvas = dynamic(() => import('@/components/PreviewCanvas'), {
     ssr: false,
@@ -283,6 +284,44 @@ export default function PageContent() {
                         Auto Rotate
                         <span className={`badge ${autoRotate ? "bg-success" : "bg-dark"} ms-2`}>A</span>
                     </button>
+                </div>
+
+                <hr />
+
+                <div className="">
+
+                    <div className="h2">Credit</div>
+
+                    <div>
+                        <Link
+                            target="_blank"
+                            href="https://github.com/Articles-Joey/scoops-builder"
+                        >
+                            <button
+                                className="btn btn-light"
+                                onClick={() => {
+
+                                }}
+                            >
+                                <i className="fab fa-github me-2"></i>
+                                <span>GitHub</span>
+                            </button>
+                        </Link>
+                        <Link 
+                            target="_blank"
+                            href="https://github.com/Articles-Joey/scoops-builder/blob/main/README.md#attributions"
+                        >
+                            <button
+                                className="btn btn-light"
+                                onClick={() => {
+    
+                                }}
+                            >
+                                Attributions
+                            </button>
+                        </Link>
+                    </div>
+
                 </div>
 
             </div>
