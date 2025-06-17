@@ -4,6 +4,10 @@
 
 <video src="https://raw.githubusercontent.com/Articles-Joey/scoops-builder/refs/heads/main/public/preview/scoops-builder.mp4" width="500" height="250" controls></video>
 
+https://raw.githubusercontent.com/Articles-Joey/scoops-builder/refs/heads/main/public/preview/scoops-builder.mp4
+
+[Test](https://raw.githubusercontent.com/Articles-Joey/scoops-builder/refs/heads/main/public/preview/scoops-builder.mp4)
+
 ## Getting Started
 
 First, run the development server:
