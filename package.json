@@ -13,16 +13,16 @@
     "@react-three/fiber": "^9.1.2",
     "bootstrap": "^5.3.6",
     "date-fns": "^4.1.0",
-    "next": "^15.3.3",
+    "next": "^15.5.2",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-hotkeys-hook": "^4.6.1",
-    "sass": "^1.89.2",
+    "sass": "^1.92.1",
     "three": "^0.174.0",
     "zustand": "^5.0.5"
   },
   "devDependencies": {
-    "eslint": "9.21.0",
-    "eslint-config-next": "15.3.3"
+    "eslint": "9.35.0",
+    "eslint-config-next": "15.5.2"
   }
 }
